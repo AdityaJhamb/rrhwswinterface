@@ -58,8 +58,8 @@ int thirdBits(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  int n_bit_mask = ~(((0x1 << 31) >> 31) << n);
-  return !!((x & n_bit_mask) & (~x));
+  int mask = x >> 31;
+  return !(((~x & mask) + (x & ~mask)) >> (n + ~0));
 }
 /*
  * sign - return 1 if positive, 0 if zero, and -1 if negative
@@ -104,7 +104,12 @@ int logicalShift(int x, int n) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-  return 2;
+  int total1 = x + y;
+  int totalx = x >> 31;
+  int totaly = y >> 31;
+  int total2 = total1 >> 31;
+
+  return !( ~(totalx ^ totaly) & (totalx ^ total2));
 }
 // Rating: 4
 /*
@@ -115,7 +120,8 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int bang(int x) {
-  return x + 1;
+  int invx = ~x + 1;
+  return ((~x & ~invx) >> 31) & 0x1;
 }
 // Extra Credit: Rating: 3
 /*
@@ -138,5 +144,12 @@ int conditional(int x, int y, int z) {
  *   Rating: 4
  */
 int isPower2(int x) {
-  return 2;
+  int minus_one,sign_x,minus;
+
+  minus_one=~0;
+  sign_x=x>>31;
+  minus=(minus_one^sign_x);
+
+
+  return !((x&(x+minus))+!x);
 }
