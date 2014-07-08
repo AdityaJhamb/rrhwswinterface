@@ -58,7 +58,8 @@ int thirdBits(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+  int n_bit_mask = ~(((0x1 << 31) >> 31) << n);
+  return !!((x & n_bit_mask) & (~x));
 }
 /*
  * sign - return 1 if positive, 0 if zero, and -1 if negative
@@ -69,7 +70,7 @@ int fitsBits(int x, int n) {
  *  Rating: 2
  */
 int sign(int x) {
-  return x & ((x >> 31) & 0x1);
+  return ((x >> 31) & (~ (! !x))) + (! !x);
 }
 /*
  * getByte - Extract byte n from word x
@@ -92,7 +93,7 @@ int getByte(int x, int n) {
  *   Rating: 3
  */
 int logicalShift(int x, int n) {
-  return 2;
+  return (x >> n) & ~((((0x1) << 31) >> n) << 1);
 }
 /*
  * addOK - Determine if can compute x+y without overflow
@@ -114,7 +115,7 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int bang(int x) {
-  return 2;
+  return x + 1;
 }
 // Extra Credit: Rating: 3
 /*
@@ -125,7 +126,7 @@ int bang(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  return (((! !x << 31) >> 31) & y) + ((((!x) << 31) >> 31) & z);
 }
 // Extra Credit: Rating: 4
 /*
