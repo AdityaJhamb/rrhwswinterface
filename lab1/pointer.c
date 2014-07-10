@@ -1,7 +1,7 @@
 /*
  * CSE 351 HW1 (Data Lab - Pointers)
  *
- * <Please put your name and userid here>
+ * Renan Ranelli, 467358837, renanranelli{at]googlemail
  *
  * pointer.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -26,29 +26,29 @@ editing the collection of functions in this source file.
 
 INTEGER CODING RULES:
 
-  Replace the "return" statement in each function with one
-  or more lines of C code that implements the function. Your code
-  must conform to the following style:
+Replace the "return" statement in each function with one
+or more lines of C code that implements the function. Your code
+must conform to the following style:
 
-  int Funct(arg1, arg2, ...) {
-      /* brief description of how your implementation works */
-      int var1 = Expr1;
-      ...
-      int varM = ExprM;
+int Funct(arg1, arg2, ...) {
+  /* brief description of how your implementation works */
+  int var1 = Expr1;
+  ...
+    int varM = ExprM;
 
-      varJ = ExprJ;
-      ...
+    varJ = ExprJ;
+    ...
       varN = ExprN;
       return ExprR;
-  }
+}
 
-  Each "Expr" is an expression using ONLY the following:
-  1. Integer constants 0 through 255 (0xFF), inclusive. You are
-      not allowed to use big constants such as 0xffffffff.
+Each "Expr" is an expression using ONLY the following:
+1. Integer constants 0 through 255 (0xFF), inclusive. You are
+  not allowed to use big constants such as 0xffffffff.
   2. Function arguments and local variables (no global variables).
   3. For 1-4, only Unary integer operations *, & and Binary integer
-      operations - + * are allowed. For the last three, you may also
-      use shifts (<<, >>), ~, ==, and ^.
+  operations - + * are allowed. For the last three, you may also
+  use shifts (<<, >>), ~, ==, and ^.
 
   Some of the problems restrict the set of allowed operators even further.
   Each "Expr" may consist of multiple operators. You are not restricted to
@@ -66,28 +66,30 @@ INTEGER CODING RULES:
   1. Uses 2s complement, 32-bit representations of integers.
   2. Performs right shifts arithmetically.
   3. Has unpredictable behavior when shifting an integer by more
-     than the word size.
+  than the word size.
 
-/*
- * STEP 2: Modify the following functions according the coding rules.
- *
- * Test the code below in your own 'main' program.
- *
- */
+  /*
+   * STEP 2: Modify the following functions according the coding rules.
+   *
+   * Test the code below in your own 'main' program.
+   *
+   */
 
 #endif
 
-/*
- * Return the size of an integer in bytes.
- */
-int intSize() {
-  int intArray[10];
-  int * intPtr1;
-  int * intPtr2;
-  // TODO: Write code to compute size of an integer.
+  /*
+   * Return the size of an integer in bytes.
+   */
+  int intSize() {
+    int intArray[10];
+    int* intPtr1;
+    int* intPtr2;
 
-  return 2;
-}
+    intPtr1 = intArray;
+    intPtr2 = intArray + 1;
+
+    return  (long int) intPtr2 - (long int) intPtr1;
+  }
 
 /*
  * Return the size of a double in bytes.
@@ -96,9 +98,11 @@ int doubleSize() {
   double doubArray[10];
   double * doubPtr1;
   double * doubPtr2;
-  // TODO: Write code to compute size of a double.
 
-  return 2;
+  doubPtr1 = doubArray;
+  doubPtr2 = doubArray + 1;
+
+  return (long int) doubPtr2 - (long int) doubPtr1;
 }
 
 /*
@@ -108,9 +112,11 @@ int pointerSize() {
   double * ptrArray[10];
   double ** ptrPtr1;
   double ** ptrPtr2;
-  // TODO: Write code to compute size of a pointer.
 
-  return 2;
+  ptrPtr1 = ptrArray;
+  ptrPtr2 = ptrArray + 1;
+
+  return (long int) ptrPtr2 - (long int) ptrPtr1;
 }
 
 /*
@@ -124,9 +130,11 @@ int changeValue() {
   // TODO: Write code to change value of intArray[5] to 351 using only
   //       intPtr1 and the + operator.
 
+  intPtr2 = intPtr1 + 5;
+  *intPtr2 = 351;
+
   return intArray[5];
 }
-
 
 /*
  * Return 1 if ptr1 and ptr2 are within the *same* 64-byte aligned
@@ -135,8 +143,10 @@ int changeValue() {
  * Operators / and % and loops are NOT allowed.
  */
 int withinSameBlock(int * ptr1, int * ptr2) {
-  // TODO
-  return 2;
+  int adr1 = (long int) ptr1;
+  int adr2 = (long int) ptr2;
+
+  return !((adr1 >> 6) ^ (adr2 >> 6));
 }
 
 /*
@@ -144,8 +154,7 @@ int withinSameBlock(int * ptr1, int * ptr2) {
  * 0 otherwise.
  */
 int withinArray(int * intArray, int size, int * ptr) {
-  // TODO
-  return 2;
+  return (ptr >= intArray) && (ptr <= (intArray + size - 1));
 }
 /*
  * Return x with the n bits that begin at position p inverted (i.e.,
@@ -153,6 +162,8 @@ int withinArray(int * intArray, int size, int * ptr) {
  * the indices of x to begin with the low-order bit numbered as 0.
  */
 int invert(int x, int p, int n) {
-  // TODO
-  return 2;
+  int m1   = (0x1 << 31) >> (31 - p);
+  int m2   = (0x1 << 31) >> (31 - (p + n));
+  int mask = m1 ^ m2;
+  return x ^ mask;
 }
