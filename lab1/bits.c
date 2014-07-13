@@ -70,7 +70,7 @@ int fitsBits(int x, int n) {
  *  Rating: 2
  */
 int sign(int x) {
-  return ((x >> 31) & (~ (! !x))) + (! !x);
+  return (x >> 31) | (! !x);
 }
 /*
  * getByte - Extract byte n from word x
@@ -119,6 +119,7 @@ int addOK(int x, int y) {
  *   Max ops: 12
  *   Rating: 4
  */
+
 int bang(int x) {
   int invx = ~x + 1;
   return ((~x & ~invx) >> 31) & 0x1;
@@ -146,10 +147,9 @@ int conditional(int x, int y, int z) {
 int isPower2(int x) {
   int minus_one,sign_x,minus;
 
-  minus_one=~0;
-  sign_x=x>>31;
-  minus=(minus_one^sign_x);
+  minus_one = ~0;
+  sign_x = x >> 31;
+  minus = (minus_one ^ sign_x);
 
-
-  return !((x&(x+minus))+!x);
+  return !((x & (x + minus)) + !x);
 }
